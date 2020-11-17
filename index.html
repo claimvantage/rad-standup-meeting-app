@@ -16,17 +16,19 @@
     </head>
     <body>
         <div class="jumbotron">
-            <h1 class="display-4">Hello Team!</h1>
-            <p class="lead">Let this tool help the team get through standup on time.</p>
-            <p>Specify who is present with the buttons below and then press the 'Randomize and Start' button to get going!</p>
+            <h1 class="display-4">Welcome to the R&D team standup!</h1>
+            <p class="lead">No more indecision about who goes next.</p>
+            <p>Click "randomize and start" to get going. Click "not present" to move someone to the bottom of the list. Or optionally before you click "randomize and start", you can de-select people you know will not be attending by clicking on their name.</p>
         </div>
-        <div class="card mb-3 justify-content-center">
-            <div class="container ">
+        <div class="card mb-3 justify-content-center m-3">
+            <div class="container standupAttendees">
+                <!--
                 <div>
                     <h4 data-bind="text: currentTime()"></h4>
                 </div>
+                -->
                 <div>
-                     <h6>Attendees</h6>
+                     <h4>Attendees</h4>
                 </div>
                 <div class="row mb-3 justify-content-center" data-bind="foreach: allMembers()">
                     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-xs-6 justify-content-center">
@@ -35,20 +37,22 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-12">
-                        <label for="timeavailable">Total Available Time:</label>
+                        <label for="timeavailable">Total available minutes:</label>
                         <input id="timeavailable" type="text" data-bind="value: totalTimeAvailable" />
                     </div>
                 </div>
                 <div class="row justify-content-start mb-3">
-                    <div class="col-xl-2 col-lg-3 col-md-3 col-sm-4"><button class="btn btn-primary" data-bind="click: start">Randomize and Start</button></div>
-                    <div class="col-lg-2 col-md-3 col-sm-4"><button class="btn btn-primary"  data-bind="visible: memberSpeakingIndex()>-1" >Reset</button></div>           
+                    <div class="col-xl-2 col-lg-3 col-md-3 col-sm-4"><button class="btn btn-primary" data-bind="click: start">randomize and start</button></div>
+                    <!-- Broken
+                    <div class="col-lg-2 col-md-3 col-sm-4"><button class="btn btn-primary"  data-bind="visible: memberSpeakingIndex()>-1" >Reset</button></div>    
+                    -->       
                     <div class="col-xl-9 col-lg-9 col-md-6 col-sm-4"></div>         
                 </div>
             </div>
         </div>
-        <div class="card mb-3" data-bind="visible: memberSpeakingIndex()>-1">    
+        <div class="card mb-3 m-3" data-bind="visible: memberSpeakingIndex()>-1">    
             <div class="container standupAttendees"  >
-                <h6>Standup</h6>
+                <h4>Standup</h4>
                 <div class="container-fluid" data-bind="foreach: attendees">
                     <div class="row">
                         
@@ -56,16 +60,16 @@
                     <div class="row attendeeRow mb-3" >
                         <div class="col-lg-2 col-md-3 col-xs-12 container pt-3 pb-3">
                             <div class="row justify-content-center">
-                                <button class="btn" data-bind="enable: (!completed()), click: $parent.skipAttendee.bind($data), css: { 'btn-info': (!completed()), 'btn-dark': (completed()) }">Not Present</button>
+                                <button class="btn" data-bind="enable: (!completed()), click: $parent.skipAttendee.bind($data), css: { 'btn-info': (!completed()), 'btn-dark': (completed()) }">not present</button>
                             </div>
                             <div class="row justify-content-center">
-                                <button class="btn" data-bind="enable: (!completed()), css: {'btn-success': (!completed()), 'btn-dark': (completed()), 'btn-warning': (remainingTime() < 5 && remainingTime() > 0), 'btn-danger': (remainingTime() < 1 ) }, click: $parent.attendeeDone.bind($data) ">complete</button>
+                                <button class="btn" data-bind="enable: (!completed()), css: {'btn-success': (!completed()), 'btn-dark': (completed()), 'btn-warning': (remainingTime() <= 10 && remainingTime() > 0), 'btn-danger': (remainingTime() < 1 ) }, click: $parent.attendeeDone.bind($data) ">complete</button>
                             </div>                                              
                         </div>
                         <div class="col-lg-10 col-md-9 col-xs-12 pt-3 pb-3" >
                             <h3 data-bind="text: name"></h3>
                             <div class="progress">
-                                <div data-bind="'style': {'width': remainingTimeProgress()+'%' }, css: { progressBar: remainingTime() >-1, 'progressBar-bad': remainingTime() < 0 }" class="progressBar progress-bar-striped progress-bar-animated"></div>
+                                <div data-bind="'style': {'width': remainingTimeProgress()+'%' }, css: { progressBar: remainingTime() >-1, 'progressBar-bad': remainingTime() < 0 }" class="progressBar"></div>
                             </div>
                             <h5><span data-bind="text: remainingTimeText()" ></span></h5>
                         </div>
